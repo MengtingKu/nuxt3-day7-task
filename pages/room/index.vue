@@ -2,21 +2,16 @@
 import axios from 'axios';
 
 const apiUrl = 'https://nuxr3.zeabur.app/api/v1/rooms';
-const isFetch = ref(false);
 const roomsList = ref([]);
 
-await useAsyncData('roomList', async () => {
-    if (isFetch.value) return;
-    try {
-        isFetch.value = true;
-        const res = await axios.get(apiUrl);
-        roomsList.value = res.data.result;
-    } catch (err) {
-        alert(err);
-    } finally {
-        isFetch.value = false;
-    }
-});
+// const { data } = await useAsyncData('roomList', async () => {
+//     const res = await axios.get(apiUrl);
+
+//     return res.data;
+// });
+const { data } = await useFetch(apiUrl);
+
+roomsList.value = data.value.result;
 
 // 使用 fetch 或 axios 串接 前台房型 API ( GET )
 // apiUrl : https://nuxr3.zeabur.app/api/v1/rooms
@@ -32,7 +27,7 @@ await useAsyncData('roomList', async () => {
                 class="col-8 col-md-6 col-lg-3"
                 v-for="room in roomsList"
                 :key="room._id"
-                to="/room/_id"
+                :to="`/room/${room._id}`"
             >
                 <div class="card h-100 shadow-sm">
                     <img
