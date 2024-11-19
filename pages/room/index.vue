@@ -1,22 +1,14 @@
 <script setup>
-import axios from 'axios';
-
 const apiUrl = 'https://nuxr3.zeabur.app/api/v1/rooms';
-const roomsList = ref([]);
 
-// const { data } = await useAsyncData('roomList', async () => {
-//     const res = await axios.get(apiUrl);
+const { data: roomsList } = await useFetch(apiUrl, {
+    transform: response => {
+        console.log('roomsList_response =>', response);
+        const { result } = response;
 
-//     return res.data;
-// });
-const { data } = await useFetch(apiUrl);
-
-roomsList.value = data.value.result;
-
-// 使用 fetch 或 axios 串接 前台房型 API ( GET )
-// apiUrl : https://nuxr3.zeabur.app/api/v1/rooms
-// response 回傳後，將資料寫入 roomsList 變數
-// 使用 roomsList 變數在下方 template 渲染列表
+        return result;
+    },
+});
 </script>
 
 <template>

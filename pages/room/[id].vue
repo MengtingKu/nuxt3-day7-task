@@ -3,10 +3,15 @@ const baseUrl = `https://nuxr3.zeabur.app/api/v1/rooms`;
 const router = useRouter();
 const route = useRoute();
 const { id: roomId } = route.params;
-const roomInfo = ref({});
 
-const { data } = await useFetch(`${baseUrl}/${roomId}`);
-roomInfo.value = data.value.result;
+const { data: roomInfo } = await useFetch(`${baseUrl}/${roomId}`, {
+    transform: response => {
+        console.log('roomId_response =>', response);
+        const { result } = response;
+
+        return result;
+    },
+});
 </script>
 
 <template>
